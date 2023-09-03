@@ -22,6 +22,15 @@ class Restaurant(Base):
         return f"Restaurant {self.id}: " \
             + f"{self.name}, " \
             + f"Price {self.price}"
+    
+    @classmethod
+    def reviews(cls):
+        #  returns a collection of all the reviews for the `Restaurant`
+        pass
+    
+    def customers(cls):
+        # returns a collection of all the customers who reviewed the `Restaurant`
+        pass
 
 class Customer(Base):
     __tablename__ = 'customers'
@@ -37,6 +46,34 @@ class Customer(Base):
         return f"Customer {self.id}: " \
             + f"{self.first_name} " \
             + f"{self.last_name}"
+            
+    def reviews(self):
+        # should return a collection of all the reviews that the `Customer` has left
+        pass
+    
+    def restaurants(self):
+        # should return a collection of all the restaurants that the `Customer` has reviewed
+        pass
+    
+    def full_name(self):
+        # returns the full name of the customer, with the first name and the last name  concatenated, Western style.
+        return f'{self.first_name} {self.last_name}'
+    
+    def favorite_restaurant(self):
+        # returns the restaurant instance that has the highest star rating from this customer
+        pass
+    
+    def add_review(self, restaurant, rating):
+        # takes a `restaurant` (an instance of the `Restaurant` class) and a rating
+        # creates a new review for the restaurant with the given `restaurant_id`
+        pass
+    
+    def delete_reviews(self, restaurant):
+        # takes a `restaurant` (an instance of the `Restaurant` class) and
+        # removes **all** their reviews for this restaurant
+        # you will have to delete rows from the `reviews` table to get this to work!
+        pass
+        
 
 class Review(Base):
     __tablename__ = 'reviews'
@@ -54,3 +91,16 @@ class Review(Base):
             f'star rating={self.star_rating}, ' + \
             f'restaurant id={self.restaurant_id}, ' + \
             f'customer id={self.customer_id})'
+    
+    def customer(self):
+        # should return the `Customer` instance for this review
+        pass
+    
+    def  restaurant(self):
+        # should return the `Restaurant` instance for this review
+        pass
+    
+    def full_review(self):
+        c = self.customer()
+        r = self.restaurant()
+        return f'Review for {r.name} by {c.full_name()}: {self.star_rating} stars.'
