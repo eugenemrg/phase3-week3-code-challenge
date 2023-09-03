@@ -1,4 +1,5 @@
 # Phase 3 Week 3 Code Challenge: Restaurants
+
 For this assignment, we'll be working with a restaurant review domain.
 
 We have three models: `Restaurant`, `Review`, and `Customer`.
@@ -9,16 +10,11 @@ For our purposes, a `Restaurant` has many `Review`s, a `Customer` has many
 
 `Restaurant` - `Customer` is a many to many relationship.
 
- 
-
 **Note**: You should draw your domain on paper or on a whiteboard _before you
 
 start coding_. Remember to identify a single source of truth for your data.
 
- 
-
 ## Topics
- 
 
 - SQLAlchemy Migrations
 
@@ -28,13 +24,10 @@ start coding_. Remember to identify a single source of truth for your data.
 
 - SQLAlchemy Querying
 
- 
-
 ***
 
- 
-
 ## Instructions
+
 Build out all of the methods listed in the deliverables.
 
 The methods are listed in a suggested order, but you can feel free to tackle the ones you think are easiest. Be careful: some of the later methods rely on earlier ones.
@@ -47,11 +40,9 @@ You are also encouraged to use the `seeds.py` file to create sample data to test
 
 Writing error-free code is more important than completing all of the deliverables listed - prioritize writing methods that work over writing more methods that don't work. You should test your code in the console as you write.
 
-Similarly, messy code that works is better than clean code that doesn't. First, prioritize getting things working. Then, if there is time at the end, refactor your code to adhere to best practices. 
+Similarly, messy code that works is better than clean code that doesn't. First, prioritize getting things working. Then, if there is time at the end, refactor your code to adhere to best practices.
 
 **Before you submit!** Save and run your code to verify that it works as you expect. If you have any methods that are not working yet, feel free to leave comments describing your progress.
-
- 
 
 What You Need to Have
 You need to have migrations and models for the initial `Restaurant` and `Customer` models, and seed data for some `Restaurant`s and `Customer`s.
