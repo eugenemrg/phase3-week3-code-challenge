@@ -35,6 +35,7 @@ Get the additional project details [here](/SQLAlchemy-Code-Challenge_Restaurants
 - Clone/Download the code from the repository, navigate to the directory on the terminal
 - Run `pipenv install` to install required packages
 - Run `pipenv shell` to use the project in created project environment
+- Create sample data and test output, run `cd app`, in the app directory run `python seed.py` to generate sample data for the database
 
 ## Language(s)
 
