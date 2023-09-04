@@ -1,6 +1,6 @@
 # Phase 3 Week 3 Code Challenge: Restaurants
 
-For this assignment, we'll be working with a restaurant review domain.
+For this project, we'll be working with a restaurant review domain.
 
 We have three models: `Restaurant`, `Review`, and `Customer`.
 
@@ -9,6 +9,8 @@ For our purposes, a `Restaurant` has many `Review`s, a `Customer` has many
 `Review`s, and a `Review` belongs to a `Restaurant` and to a `Customer`.
 
 `Restaurant` - `Customer` is a many to many relationship.
+
+Get the additional project details [here](/SQLAlchemy-Code-Challenge_Restaurants.pdf).
 
 ## Topics
 
