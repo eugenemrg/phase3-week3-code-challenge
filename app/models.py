@@ -32,7 +32,7 @@ class Restaurant(Base):
     
     def customers(self):
         # returns a collection of all the customers who reviewed the `Restaurant`
-        return [session.query(Customer).filter(Customer.id == id).first() for id in session.query(Review.id).filter(Review.restaurant_id == self.id)]
+        return [session.query(Customer).filter(Customer.id == id).first() for id in session.query(Review.customer_id).filter(Review.restaurant_id == self.id)]
 
 class Customer(Base):
     __tablename__ = 'customers'
@@ -68,7 +68,7 @@ class Customer(Base):
     def add_review(self, restaurant, rating):
         # takes a `restaurant` (an instance of the `Restaurant` class) and a rating
         # creates a new review for the restaurant with the given `restaurant_id`
-        review = Review(customer_id=self.id, restaurant=restaurant, rating=rating)
+        review = Review(customer_id=self.id, restaurant_id=restaurant.id, rating=rating)
         session.add(review)
         session.commit()
     
