@@ -60,5 +60,18 @@ if __name__ == '__main__':
             session.add(review)
             session.commit()
             reviews.append(review)
+    
+    for i in range(5):
+        print('Customer\'s reviews:', customers[i].reviews())
+        print('Customer\'s reviewed restaurants:', customers[i].restaurants())
+        print('Customer\'s Full name:', customers[i].full_name())
+        print('Customer\'s Best Restaurant:', customers[i].favorite_restaurant())
+        print('Restaurant - list of reviews:', restaurants[i].reviews())
+        print('Restaurant - list of customers who reviewed:', restaurants[i].customers())
+        print('Review - customer instance:', reviews[i].customer())
+        print('Review - restaurant instance:', reviews[i].restaurant())
+        print('Review - full review for instance:', reviews[i].full_review())
+        print('*************')
+        
             
     session.close()

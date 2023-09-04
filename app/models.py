@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy import ForeignKey, Column, Integer, String, func
+from sqlalchemy import ForeignKey, Column, Integer, String, desc, func
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -32,7 +32,8 @@ class Restaurant(Base):
     
     def customers(self):
         # returns a collection of all the customers who reviewed the `Restaurant`
-        return [session.query(Customer).filter(Customer.id == id).first() for id in session.query(Review.customer_id).filter(Review.restaurant_id == self.id)]
+        reviewer_ids = [customer_id[0] for customer_id in session.query(Review.customer_id).filter(Review.restaurant_id == self.id)]
+        return [session.query(Customer).filter(Customer.id == customer_id).first() for customer_id in reviewer_ids]
 
 class Customer(Base):
     __tablename__ = 'customers'
@@ -55,7 +56,8 @@ class Customer(Base):
     
     def restaurants(self):
         # should return a collection of all the restaurants that the `Customer` has reviewed
-        return [restaurant for restaurant in session.query(Restaurant).filter(Restaurant.customer_id == self.id)]
+        reviewed_ids = [restaurant_id[0] for restaurant_id in session.query(Review.restaurant_id).filter(Review.customer_id == self.id)]
+        return [session.query(Restaurant).filter(Restaurant.id == restaurant_id).first() for restaurant_id in reviewed_ids]
     
     def full_name(self):
         # returns the full name of the customer, with the first name and the last name  concatenated, Western style.
@@ -63,7 +65,7 @@ class Customer(Base):
     
     def favorite_restaurant(self):
         # returns the restaurant instance that has the highest star rating from this customer
-        return [restaurant for restaurant in session.query(func.max(Restaurant.star_rating)).first().filter(Restaurant.customer_id == self.id)]
+        return [session.query(Restaurant).filter(Restaurant.id == restaurant_id[0]).first() for restaurant_id in session.query(Review.restaurant_id).filter(Review.customer_id == self.id).order_by(desc(Review.star_rating)).limit(1)]
     
     def add_review(self, restaurant, rating):
         # takes a `restaurant` (an instance of the `Restaurant` class) and a rating
