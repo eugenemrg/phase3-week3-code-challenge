@@ -1,12 +1,15 @@
 from sqlalchemy import create_engine
-from sqlalchemy import ForeignKey, Table, Column, Integer, String
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import ForeignKey, Column, Integer, String, func
+from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.associationproxy import association_proxy
 
 engine = create_engine('sqlite:///reviewer.db')
 
 Base = declarative_base()
+
+Session = sessionmaker(bind=engine)
+session = Session()
 
 class Restaurant(Base):
     __tablename__ = 'restaurants'
@@ -22,15 +25,14 @@ class Restaurant(Base):
         return f"Restaurant {self.id}: " \
             + f"{self.name}, " \
             + f"Price {self.price}"
-    
-    @classmethod
-    def reviews(cls):
+            
+    def reviews(self):
         #  returns a collection of all the reviews for the `Restaurant`
-        pass
+        return [review for review in session.query(Review).filter(Review.restaurant_id == self.id)]
     
-    def customers(cls):
+    def customers(self):
         # returns a collection of all the customers who reviewed the `Restaurant`
-        pass
+        return [session.query(Customer).filter(Customer.id == id).first() for id in session.query(Review.id).filter(Review.restaurant_id == self.id)]
 
 class Customer(Base):
     __tablename__ = 'customers'
@@ -49,11 +51,11 @@ class Customer(Base):
             
     def reviews(self):
         # should return a collection of all the reviews that the `Customer` has left
-        pass
+        return [reviews for reviews in session.query(Review).filter(Review.id == self.id)]
     
     def restaurants(self):
         # should return a collection of all the restaurants that the `Customer` has reviewed
-        pass
+        return [restaurant for restaurant in session.query(Restaurant).filter(Restaurant.customer_id == self.id)]
     
     def full_name(self):
         # returns the full name of the customer, with the first name and the last name  concatenated, Western style.
@@ -61,18 +63,20 @@ class Customer(Base):
     
     def favorite_restaurant(self):
         # returns the restaurant instance that has the highest star rating from this customer
-        pass
+        return [restaurant for restaurant in session.query(func.max(Restaurant.star_rating)).first().filter(Restaurant.customer_id == self.id)]
     
     def add_review(self, restaurant, rating):
         # takes a `restaurant` (an instance of the `Restaurant` class) and a rating
         # creates a new review for the restaurant with the given `restaurant_id`
-        pass
+        review = Review(customer_id=self.id, restaurant=restaurant, rating=rating)
+        session.add(review)
+        session.commit()
     
     def delete_reviews(self, restaurant):
         # takes a `restaurant` (an instance of the `Restaurant` class) and
         # removes **all** their reviews for this restaurant
         # you will have to delete rows from the `reviews` table to get this to work!
-        pass
+        session.query(Review).filter_by(restaurant_id=restaurant.id, customer_id = self.id).delete()
         
 
 class Review(Base):
@@ -94,11 +98,11 @@ class Review(Base):
     
     def customer(self):
         # should return the `Customer` instance for this review
-        pass
+        return session.query(Customer).filter(Customer.id == self.customer_id).first()
     
     def  restaurant(self):
         # should return the `Restaurant` instance for this review
-        pass
+        return session.query(Restaurant).filter(Restaurant.id == self.restaurant_id).first()
     
     def full_review(self):
         c = self.customer()
